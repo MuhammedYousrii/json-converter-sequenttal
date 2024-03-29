@@ -1,1 +1,9 @@
-<p>json-box works!</p>
+<mat-form-field appearance="fill" style="width: 100%;">
+
+    <mat-label>Enter JSON structure to convert</mat-label>
+    <textarea matInput [formControl]="jsonBoxControl" rows="15"></textarea>
+
+    <!-- Validations Messages -->
+    <mat-error *ngIf="jsonBoxControl.hasError('invalidJson')"> {{errorMessages.invalidJson}}</mat-error>
+    <mat-error *ngIf="jsonBoxControl.hasError('required')"> {{errorMessages.required}}</mat-error>
+  </mat-form-field>

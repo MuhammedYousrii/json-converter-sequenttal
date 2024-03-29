@@ -12,4 +12,9 @@ import { FilterBoxComponent, PaginationComponent, TableBodyComponent } from '@js
   styleUrl: './converter-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConverterPageComponent {}
+export class ConverterPageComponent {
+
+  public onValidJsonChange(validJson: string): string {
+    return validJson;
+  }
+}
