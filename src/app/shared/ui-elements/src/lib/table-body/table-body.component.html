@@ -1,1 +1,28 @@
-<p>table-body works!</p>
+
+<!-- @if (tableDataSource.data.length && displayedColumns.length) { -->
+    <div class="mat-elevation-z8" style="padding: 16px;">
+  
+        <table mat-table [dataSource]="tableDataSource" matSort class="mat-elevation-z8">
+          
+          
+          <!-- Defined columns -->
+          <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column }}</th>
+            <td mat-cell *matCellDef="let row">{{ row[column] }}</td>
+          </ng-container>
+        
+          
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+
+        
+    </div>
+
+    <mat-paginator [length]="tableDataSource.data.length"
+[pageSize]="pageSize"
+[pageSizeOptions]="pageSizeOptions">
+</mat-paginator>
+
+<!-- } -->
