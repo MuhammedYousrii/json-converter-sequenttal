@@ -1,1 +1,8 @@
-<p>filter-box works!</p>
+<mat-form-field >
+    <mat-label>{{ key }}</mat-label>
+    <mat-select class="mat-select" [formControl]="filterControl">
+      <mat-option *ngFor="let option of values" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>

@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { JsonBoxComponent } from './json-box/json-box.component';
 import { FilterBoxComponent, PaginationComponent, TableBodyComponent } from '@jsonConverter/ui-elements';
-
+import { ConverterPageService } from './converter-page.service';
+import { FilterOptionModel } from './converter-page.models';
 
 @Component({
   selector: 'app-converter-page',
@@ -12,9 +13,29 @@ import { FilterBoxComponent, PaginationComponent, TableBodyComponent } from '@js
   styleUrl: './converter-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
+
 export class ConverterPageComponent {
 
-  public onValidJsonChange(validJson: string): string {
-    return validJson;
+  public converterService: ConverterPageService<any> = inject(ConverterPageService);
+
+
+  /**
+   * Call the converter service to notify all interested listeners for the new parsed JSON
+   * @param parsedJson 
+   */
+  public onValidJsonChange(parsedJson: any[]) {
+    this.converterService.notify({
+      useMemoized: false,
+      value: parsedJson
+    }).then(() => console.log('Parsed JSON has been updated'));
   }
+
+  /**
+   * Patch active filters values
+   */
+  public onFilterChange(filters: FilterOptionModel[]) {
+    this.converterService.patchActiveFilters(filters);
+  }
+
 }

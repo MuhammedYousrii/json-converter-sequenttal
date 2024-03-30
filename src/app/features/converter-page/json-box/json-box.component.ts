@@ -4,6 +4,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { jsonBoxValidator } from './json-box.validator';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-json-box',
@@ -13,24 +14,27 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   styleUrl: './json-box.component.scss',
 })
 export class JsonBoxComponent implements OnInit {
-  readonly jsonBoxControl: FormControl<string> = new FormControl(
+  readonly jsonBoxControl: FormControl<string | null> = new FormControl(
     '', 
   {
     validators: [Validators.required, jsonBoxValidator()], 
-    nonNullable: true
+    updateOn: 'change'
   });
 
   readonly errorMessages = {
     invalidJson: 'The JSON which you have entered is an invalid JSON Structure',
-    required: 'Please Enter a JSON to convert'
-  }
-  @Output() public uponChange: EventEmitter<string> = new EventEmitter<string>();
+    required: 'Please enter a JSON to convert'
+  };
+  @Output() public uponChange: EventEmitter<any[]> = new EventEmitter<any[]>();
 
-  
   ngOnInit(): void {
-      this.jsonBoxControl.valueChanges.subscribe((validJson: string) => {
-        if (this.jsonBoxControl.valid) this.uponChange.emit(validJson);
+    this.jsonBoxControl.valueChanges.pipe(
+      tap((validJson: string | null) => {
+        if (validJson && this.jsonBoxControl.valid) {
+          this.uponChange.emit(JSON.parse(validJson));
+        }
       })
+    ).subscribe();
   }
 
   

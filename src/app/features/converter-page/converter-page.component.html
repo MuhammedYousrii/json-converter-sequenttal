@@ -1,4 +1,32 @@
+<section class="converter-page">
+
+
+<!-- JSON BOX -->
 <app-json-box (uponChange)="onValidJsonChange($event)"></app-json-box>
-<ui-filter-box></ui-filter-box>
-<ui-table-body></ui-table-body>
-<ui-pagination></ui-pagination>
+
+
+<!-- FILTERS BOXES -->
+@for (availableFilter of converterService.availableFiltersList$ | async; track $index) {
+    <ui-filter-box style="margin: 5px;"
+    [key]="availableFilter.key"
+    [values]="availableFilter.values"
+    (uponFilterChange)="onFilterChange($event)">
+</ui-filter-box>
+} @empty {
+    <p>Enter a JSON to enable filtering data using dynamic filters</p>
+}
+
+
+
+ 
+
+
+
+<!-- TABLE  -->
+<!-- <ui-table-body [dataSource$]="converterService.tableData$"></ui-table-body> -->
+
+
+
+<!-- <ui-pagination></ui-pagination> -->
+
+</section>

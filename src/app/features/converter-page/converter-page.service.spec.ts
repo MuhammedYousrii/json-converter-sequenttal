@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { ConverterPageService } from './converter-page.service';
 
 describe('ConverterPageService', () => {
-  let service: ConverterPageService;
+  let service: ConverterPageService<any>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
