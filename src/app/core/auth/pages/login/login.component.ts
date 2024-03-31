@@ -26,7 +26,7 @@ export class LoginComponent {
 
   readonly loginForm = this._FB.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(this._authService.passwordValidatePattern)]],
   }) 
 
 

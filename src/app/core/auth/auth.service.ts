@@ -10,6 +10,7 @@ export class AuthService {
   // Injecting the required dependents.
   private _firebaseAuth: Auth = inject(Auth);
   private _router: Router = inject(Router);
+  public passwordValidatePattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
 
 
   readonly user$ = user(this._firebaseAuth); // => Observable<User | null>

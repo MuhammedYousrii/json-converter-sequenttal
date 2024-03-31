@@ -26,7 +26,11 @@
       <mat-form-field class="flex-1">
         <mat-label>Username</mat-label>
         <input matInput formControlName="username" placeholder="Enter your username" aria-label="username">
-        
+        @if(loginForm.get('password')?.errors) {
+          <mat-error>
+            Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character
+          </mat-error>
+        }
       </mat-form-field>
 
         <!-- Password -->

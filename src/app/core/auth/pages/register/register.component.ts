@@ -25,7 +25,7 @@ export class RegisterComponent {
   readonly registerForm = this._FB.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     username: ['', [Validators.required, Validators.minLength(3)]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    password: ['', [Validators.required, Validators.minLength(8), validators.pattern(this._authService)]],
   }) 
 
 
