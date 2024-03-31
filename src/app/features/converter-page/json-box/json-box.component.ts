@@ -4,7 +4,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { jsonBoxValidator } from './json-box.validator';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-json-box',
@@ -31,14 +31,27 @@ export class JsonBoxComponent implements OnInit {
   @Output() public uponChange: EventEmitter<any[]> = new EventEmitter<any[]>();
 
   ngOnInit(): void {
-    this.jsonBoxControl.valueChanges.pipe(
+   this._provideJson().subscribe();
+  }
+
+
+
+  /**
+   * @private 
+   * Construct an stream to validate JSON and emit the parsedValue after validation
+   * 
+   * @note No need to unsubscribe manually as the stream will be destroyed when the component is destroyed
+   * @returns Observable<string | null>
+   */
+  private _provideJson(): Observable<string | null> {
+    return this.jsonBoxControl.valueChanges.pipe(
       tap((validJson: string | null) => {
         if (validJson && this.jsonBoxControl.valid) {
           const parsedJson = JSON.parse(validJson);
           this.uponChange.emit(Array.isArray(parsedJson) ? parsedJson : [parsedJson]);
         }
       })
-    ).subscribe();
+    )
   }
 
   
