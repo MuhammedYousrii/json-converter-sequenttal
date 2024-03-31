@@ -1,0 +1,23 @@
+.not-found-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .not-found-card {
+    width: 400px;
+  }
+  
+  .not-found-card mat-card-header {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .not-found-card mat-card-actions {
+    justify-content: center;
+  }
+  
+  .not-found-card button {
+    margin-top: 10px;
+  }

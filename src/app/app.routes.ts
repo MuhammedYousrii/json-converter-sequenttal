@@ -5,10 +5,11 @@ import { authGuard } from './core/auth/guards/auth.guard';
 
 export const appRoutes: Route[] = [
     {
-        path: '', component: ConverterPageComponent, canActivate: [authGuard] 
+        path: '', pathMatch: "full",  component: ConverterPageComponent, canActivate: [authGuard] 
     }, {
-        path: 'auth', loadChildren: () => import('./core/auth/auth.routes').then(routes => routes.authRoutes)
-    }, {
-        path: '**', component: PageNotFoundComponent,
+        path: '404', component: PageNotFoundComponent,
+    }, 
+    {
+        path: '**', redirectTo: '404', pathMatch: 'full'
     }
 ];

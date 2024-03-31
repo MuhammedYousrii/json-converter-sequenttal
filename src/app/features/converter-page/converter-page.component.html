@@ -23,7 +23,11 @@
 
 
 <!-- TABLE  -->
-<ui-table-body [dataSource$]="converterService.tableData$"></ui-table-body>
+@if ((converterService.tableData$ | async)?.length) {
+    <ui-table-body [dataSource$]="converterService.tableData$"></ui-table-body>
+} @else {
+        <p>Enter a JSON to enable Tables with built-in sorting and filtering functionlities</p>
+}
 
 
 
