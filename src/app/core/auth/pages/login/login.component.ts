@@ -1,26 +1,29 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../auth.service';
-import {  Router, RouterModule } from '@angular/router';
+import {  Router, RouterLink, RouterModule } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatCardModule, MatButtonModule],
+  imports: [CommonModule, RouterModule, RouterLink, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatCardModule, MatButtonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
 
   readonly FB = inject(FormBuilder);
   readonly router = inject(Router);
   readonly authService = inject(AuthService);
+
+  private destroy$ = new Subject<void>();
 
   errorMessage: string | null = null;
 
@@ -32,14 +35,23 @@ export class LoginComponent {
 
   uponSubmit(): void {
     const rawValue = this.loginForm.getRawValue();
-    this.authService.login(rawValue.email, rawValue.password).subscribe({
-      next: () => this.router.navigateByUrl('/'),
+    this.authService.login(rawValue.email, rawValue.password).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: () => {
+        this.router.navigateByUrl('/converter');
+      },
       error: (error) => this.errorMessage = error.message
     });
   }
 
-  navigateToRegisterPage($e: Event): void {
-    $e.preventDefault();
-    this.router.navigateByUrl('/register');
+  navigateToRegisterPage($event: Event): void {
+    $event.preventDefault();
+    this.router.navigateByUrl('auth/register');
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
