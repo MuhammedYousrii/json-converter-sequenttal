@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { jsonBoxValidator } from './json-box.validator';
@@ -11,7 +11,7 @@ import { tap } from 'rxjs';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
   templateUrl: './json-box.component.html',
-  styleUrl: './json-box.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JsonBoxComponent implements OnInit {
   public jsonBoxControl: FormControl<string | null> = new FormControl(
@@ -34,7 +34,8 @@ export class JsonBoxComponent implements OnInit {
     this.jsonBoxControl.valueChanges.pipe(
       tap((validJson: string | null) => {
         if (validJson && this.jsonBoxControl.valid) {
-          this.uponChange.emit(JSON.parse(validJson));
+          const parsedJson = JSON.parse(validJson);
+          this.uponChange.emit(Array.isArray(parsedJson) ? parsedJson : [parsedJson]);
         }
       })
     ).subscribe();

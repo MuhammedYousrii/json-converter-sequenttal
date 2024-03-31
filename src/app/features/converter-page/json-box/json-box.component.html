@@ -1,9 +1,9 @@
-<h2>JSON:</h2>
+<h2 class="text-xl">JSON:</h2>
 
-<mat-form-field class="json-box-wrapper" appearance="fill">
+<mat-form-field  class="block rounded-lg shadow-lg my-4 mx-auto w-11/12" appearance="fill">
 
-    <mat-label class="item">Enter JSON structure to convert</mat-label>
-    <textarea class="item" matInput [formControl]="jsonBoxControl" rows="10"></textarea>
+    <mat-label>Enter JSON</mat-label>
+    <textarea  autofocus class="bg-slate-700" matInput [formControl]="jsonBoxControl" rows="8"></textarea>
 
     @if(jsonBoxControl.untouched && jsonBoxControl.pristine) {
       <mat-hint> {{jsonBoxHint}} </mat-hint>
@@ -16,4 +16,4 @@
       <mat-error> {{errorMessages.required}}</mat-error>
     }
 </mat-form-field>
-  
+  <!-- 01282529397 -->
