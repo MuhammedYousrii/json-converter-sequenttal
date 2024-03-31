@@ -1,0 +1,23 @@
+@if(user$ | async; as user) {
+<section class="bg-blue-400 w-full p-2 mb-2">
+
+
+<div class="relative" [matMenuTriggerFor]="userPanel">
+  
+    <button mat-icon-button>
+      <mat-icon>account_circle</mat-icon>
+    </button>
+
+    <span class="text-sm"> Welcome!, {{ user.displayName }}</span>
+
+    <mat-menu #userPanel="matMenu">
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span class="text-sm">Logout</span>
+      </button>
+    </mat-menu>
+  </div>
+</section>
+
+
+}
