@@ -1,19 +1,18 @@
-  import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-  import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-  import { MatSort, MatSortModule } from '@angular/material/sort';
-  import { Subject, debounceTime, distinctUntilChanged, filter, takeUntil } from 'rxjs';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { Subject, debounceTime, distinctUntilChanged, filter, takeUntil } from 'rxjs';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-
+import { CapitalizePipe } from '../pipes/capitalize/capitalize.pipe';
   @Component({
     selector: 'ui-table-body',
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, MatTableModule, MatSortModule, MatPaginatorModule, MatFormFieldModule, MatInputModule],
+    imports: [CommonModule, ReactiveFormsModule, MatTableModule, MatSortModule, MatPaginatorModule, MatFormFieldModule, MatInputModule, CapitalizePipe],
     templateUrl: './table-body.component.html',
-    styleUrls: ['./table-body.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
   })
   export class TableBodyComponent<T> implements OnInit, OnDestroy, AfterViewInit {
@@ -43,16 +42,9 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
        
       });
 
-      this.searchControl.valueChanges.pipe(
-        takeUntil(this._destroy$),
-        debounceTime(1000),
-        distinctUntilChanged(),
-        filter(searchValue => searchValue !== null),
-      ).subscribe(searchValue => {
-        this.tableDataSource.filter = searchValue || '';
-      })
-    }
+      this._provideSearch();
 
+    }
 
     ngAfterViewInit(): void {
       if (!this.tableDataSource.sort) this.tableDataSource.sort = this.matSort;
@@ -64,6 +56,15 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
     ngOnDestroy(): void {
       this._destroy$.next();
       this._destroy$.complete();
+    }
+
+    // Provide search functionality through structing data stream to process the search value.
+    private _provideSearch() {
+      this.searchControl.valueChanges.pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        filter(searchValue => searchValue !== null),
+      ).subscribe(searchValue => this.tableDataSource.filter = searchValue || '' )
     }
 
 }
