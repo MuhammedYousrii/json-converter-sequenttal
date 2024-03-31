@@ -1,7 +1,5 @@
-<h5 class="filter-title">
-  {{ key  }}
-</h5>
-<mat-form-field >
+<mat-form-field class="w-full block" appearance="fill">
+    <mat-label>{{ key | capitalize }}</mat-label>
     <mat-select [attr.aria-label]="key" class="mat-select" multiple [formControl]="filterControl">
       @for (option of values; track option) {
         <mat-option [value]="option">{{ option }}</mat-option>
