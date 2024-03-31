@@ -8,13 +8,17 @@
       <mat-icon>account_circle</mat-icon>
     </button>
 
+    <!-- Welcome Message -->
     <span class="text-sm"> Welcome!, {{ user.displayName }}</span>
 
     <mat-menu #userPanel="matMenu">
+      
+      <!-- Logout -->
       <button mat-menu-item (click)="logout()">
         <mat-icon>exit_to_app</mat-icon>
         <span class="text-sm">Logout</span>
       </button>
+
     </mat-menu>
   </div>
 </section>

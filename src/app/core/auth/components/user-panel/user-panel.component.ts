@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth.service';
@@ -11,19 +11,15 @@ import { MatMenuModule } from '@angular/material/menu';
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatIconModule, MatMenuModule],
   templateUrl: './user-panel.component.html',
-  styles: [],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserPanelComponent {
 
-  authService = inject(AuthService);
-  router = inject(Router);
-  user$ = this.authService.user$;
+  private readonly _authService = inject(AuthService);
 
   logout(): void {
-    this.authService.logout()
-      .subscribe({ 
-        next:  () => this.router.navigateByUrl('/auth/login'),
-        error: error => console.error('Error logging out:', error)
-      });
+    this._authService.logout()
+      .then(() => this._authService.navigateToLoginPage())
+      .catch((error) => console.error(error));
   }
 }
