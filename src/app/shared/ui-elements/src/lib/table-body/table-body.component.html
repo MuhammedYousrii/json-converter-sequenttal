@@ -1,6 +1,12 @@
 
 <!-- @if (tableDataSource.data.length && displayedColumns.length) { -->
     <div class="mat-elevation-z8" style="padding: 16px;">
+
+
+      <mat-form-field>
+        <mat-label>Search</mat-label>
+        <input matInput [formControl]="searchControl" placeholder="Search" aria-label="search">
+      </mat-form-field>
   
         <table mat-table [dataSource]="tableDataSource" matSort class="mat-elevation-z8">
           
