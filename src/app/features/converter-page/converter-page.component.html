@@ -1,29 +1,28 @@
-<section class="converter-page">
+<section class="p-5">
 
 
 <!-- JSON BOX -->
-<app-json-box (uponChange)="onValidJsonChange($event)"></app-json-box>
+<app-json-box class="block w-100 text-center" (uponChange)="onValidJsonChange($event)"></app-json-box>
 
 
 <!-- FILTERS BOXES -->
-<h2>Filters: </h2>
-<section class="filters-wrapper">
-
-
 @for (availableFilter of converterService.availableFiltersList$ | async; track $index) {
-    <ui-filter-box style="margin: 5px; display: block;"
+
+<h3 class="text-lg text-center">Filters: </h3>
+<section class="flex flex-row flex-wrap justify-between">
+
+
+
+    <ui-filter-box class="grow shrink-0 inline-flex"
     [key]="availableFilter.key"
     [values]="availableFilter.values"
     (uponFilterChange)="onFilterChange($event)">
 </ui-filter-box>
-} @empty {
-    <p>Filters will be provided upon Entered Json</p>
-}
+
 </section>
-
-
-
- 
+} @empty {
+    <p>No filters available</p>
+}
 
 
 

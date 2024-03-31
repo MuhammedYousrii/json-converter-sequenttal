@@ -4,13 +4,14 @@ import { JsonBoxComponent } from './json-box/json-box.component';
 import { FilterBoxComponent, PaginationComponent, TableBodyComponent } from '@jsonConverter/ui-elements';
 import { ConverterPageService } from './converter-page.service';
 import { FilterOptionModel } from './converter-page.models';
+import { AuthService } from 'src/app/core/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-converter-page',
   standalone: true,
   imports: [CommonModule, JsonBoxComponent, TableBodyComponent, PaginationComponent, FilterBoxComponent],
   templateUrl: './converter-page.component.html',
-  styleUrl: './converter-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
@@ -35,6 +36,7 @@ export class ConverterPageComponent {
    * Patch active filters values
    */
   public onFilterChange(filters: FilterOptionModel[]) {
+    console.log(filters);
     this.converterService.patchActiveFilters(filters);
   }
 

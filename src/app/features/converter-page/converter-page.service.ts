@@ -9,6 +9,7 @@ export class ConverterPageService<T extends Record<string, T>> {
 
 
   private _memoizedRecords: T[] = [];
+  private _ENABLE_FILTERS_ON_COUNT = 5;
 
 
   readonly tableData$ = new BehaviorSubject<T[]>([]);
@@ -29,13 +30,23 @@ export class ConverterPageService<T extends Record<string, T>> {
       const records = [...config.value];
       this._cache(records);
       this.tableData$.next(records);
+      if (this._getCache().length <= this._ENABLE_FILTERS_ON_COUNT) return;
 
       const availableFilters = await lastValueFrom(this._createFiltersList(records));
       this.availableFiltersList$.next(availableFilters);
-    } else {
-      const filteredRecords = await firstValueFrom(this._filterRecords(this._getCache()));
+
+      return;
+    } 
+
+    if (this.activeFilters$.value.length) {
+      const filteredRecords = await firstValueFrom(this._filterRecords({ records: this._getCache() }));
       this.tableData$.next(filteredRecords);
+      return;
     }
+
+    this.tableData$.next(this._getCache());
+   
+    
   }
 
 
@@ -87,12 +98,13 @@ export class ConverterPageService<T extends Record<string, T>> {
    * @param records$ 
    * @returns Observable<any[]>
   */
-  private _filterRecords<T>(records: T[]): Observable<T[]> {
+  private _filterRecords<T>({ records }: { records: T[]; }): Observable<T[]> {
     return of(records as T[]).pipe(
       switchMap(records => from(this.activeFilters$).pipe(
         map(filters => {
           return records.filter(record => {
             return filters.every(filter => {
+              if (filter.values.length === 0) return true;
               return filter.values.includes((record as any)[filter.key]);
             });
           });
