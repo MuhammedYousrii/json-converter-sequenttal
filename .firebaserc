@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "json-converter-sequenttal": {
+      "hosting": {
+        "json-converter-sequenttal": [
+          "json-converter-sequenttal"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "json-converter-sequenttal"
+  }
+}
