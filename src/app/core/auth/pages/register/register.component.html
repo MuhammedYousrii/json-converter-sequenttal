@@ -1,15 +1,17 @@
 @if (errorMessage) {
-    <div> {{errorMessage}}</div>
+  <div> {{errorMessage}}</div>
 }
 
-<section class="register-container">
-<mat-card>
-    <mat-card-header>
-      <mat-card-title>Sign Up</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form [formGroup]="registerForm" (ngSubmit)="uponSubmit()">
-        <mat-form-field class="form-field">
+<section class="justify-center items-center h-1/2 w-1/2 shadow-xl p-8">
+
+  <h2 class="text-2xl font-semibold text-gray-700 mb-8">Register</h2>
+  
+    <form [formGroup]="registerForm" (ngSubmit)="uponSubmit()">
+      
+      <section class="flex flex-col justify-center justify-items-center">
+        
+        <!-- Email -->
+        <mat-form-field class="flex-1">
           <mat-label>Email</mat-label>
           <input matInput formControlName="email" placeholder="Enter your email" aria-label="email">
           @if(registerForm.get('email')?.invalid && registerForm.get('email')?.touched ) {
@@ -18,20 +20,36 @@
           </mat-error>
           }
          
+      
         </mat-form-field>
-        <mat-form-field class="form-field">
-          <mat-label>Username</mat-label>
-          <input matInput formControlName="username" placeholder="Enter your username" aria-label="username">
-          
-        </mat-form-field>
-        <mat-form-field class="form-field">
+
+
+      <mat-form-field class="flex-1">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" placeholder="Enter your username" aria-label="username">
+        
+      </mat-form-field>
+
+        <!-- Password -->
+        <mat-form-field class="flex-1">
           <mat-label>Password</mat-label>
           <input matInput formControlName="password" placeholder="Enter your password" aria-label="password" type="password">
-          
         </mat-form-field>
-        <button mat-raised-button color="primary" type="submit">register</button>
-        <button mat-raised-button color="secondary" (click)="navigateToLoginPage($event)">Already have an account ?</button>
-      </form>
-    </mat-card-content>
-  </mat-card>
-  </section>
+        @if(registerForm.get('password')?.errors && registerForm.get('password')?.touched) {
+          <mat-error>
+            Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character
+          </mat-error>
+        }
+      </section>
+      
+     
+      <!-- Actions -->
+      <section class="mt-8">
+        <button class="w-40 h-20 mr-4" mat-raised-button  color="primary" type="submit">Register</button>
+        <a href="#" class="text-blue-700 font-light text-sm" (click)="navigateToLoginPage($event)"> Already have an account ?</a>
+      </section>
+   
+     
+    </form>
+  
+</section>

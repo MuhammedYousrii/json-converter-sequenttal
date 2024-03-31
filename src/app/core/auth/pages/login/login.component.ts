@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, Signal, WritableSignal, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../auth.service';
 import {  Router, RouterLink, RouterModule } from '@angular/router';
@@ -25,7 +25,7 @@ export class LoginComponent implements OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  errorMessage: string | null = null;
+  errorMessageS: WritableSignal<string | null> = signal<string | null>(null);
 
   readonly loginForm = this.FB.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -41,8 +41,11 @@ export class LoginComponent implements OnDestroy {
       next: () => {
         this.router.navigateByUrl('/converter');
       },
-      error: (error) => this.errorMessage = error.message
-    });
+      error: ({code}) => {
+        if (code === 'auth/invalid-credential') {
+          this.errorMessageS.set(`Server has stated an issue which refer to, ${code.replace('auth/', '').replace('-', ' ')}`);
+        }
+  }})
   }
 
   navigateToRegisterPage($event: Event): void {
