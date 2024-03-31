@@ -14,17 +14,20 @@ import { tap } from 'rxjs';
   styleUrl: './json-box.component.scss',
 })
 export class JsonBoxComponent implements OnInit {
-  readonly jsonBoxControl: FormControl<string | null> = new FormControl(
+  public jsonBoxControl: FormControl<string | null> = new FormControl(
     '', 
   {
     validators: [Validators.required, jsonBoxValidator()], 
     updateOn: 'change'
   });
 
-  readonly errorMessages = {
-    invalidJson: 'The JSON which you have entered is an invalid JSON Structure',
+  public readonly errorMessages = {
+    invalidJson: 'Please enter a valid JSON structure',
     required: 'Please enter a JSON to convert'
   };
+  public readonly jsonBoxHint = 'Entered JSON will be validated first before proceeding';
+  
+  
   @Output() public uponChange: EventEmitter<any[]> = new EventEmitter<any[]>();
 
   ngOnInit(): void {

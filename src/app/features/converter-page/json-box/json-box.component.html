@@ -1,9 +1,19 @@
-<mat-form-field appearance="fill" style="width: 100%;">
+<h2>JSON:</h2>
 
-    <mat-label>Enter JSON structure to convert</mat-label>
-    <textarea matInput [formControl]="jsonBoxControl" rows="15"></textarea>
+<mat-form-field class="json-box-wrapper" appearance="fill">
 
+    <mat-label class="item">Enter JSON structure to convert</mat-label>
+    <textarea class="item" matInput [formControl]="jsonBoxControl" rows="10"></textarea>
+
+    @if(jsonBoxControl.untouched && jsonBoxControl.pristine) {
+      <mat-hint> {{jsonBoxHint}} </mat-hint>
+    }
     <!-- Validations Messages -->
-    <mat-error *ngIf="jsonBoxControl.hasError('invalidJson')"> {{errorMessages.invalidJson}}</mat-error>
-    <mat-error *ngIf="jsonBoxControl.hasError('required')"> {{errorMessages.required}}</mat-error>
-  </mat-form-field>
+    @if (jsonBoxControl.hasError('invalidJson')) {
+      <mat-error> {{errorMessages.invalidJson}}</mat-error>
+    } 
+    @else if (jsonBoxControl.hasError('required')) {
+      <mat-error> {{errorMessages.required}}</mat-error>
+    }
+</mat-form-field>
+  
