@@ -7,11 +7,11 @@ import { RegisterComponent } from './pages/register/register.component';
 
 export const authRoutes: Route[] = [
     {
-        path: 'login', component: LoginComponent
+        path: 'login', component: LoginComponent, canActivate: [guestGuard]
     }, {
-       path: 'register', component: RegisterComponent, 
+       path: 'register', component: RegisterComponent
     }, {
-        path: '401', component: NotAuthComponent
+        path: '401', component: NotAuthComponent, canActivate: [guestGuard]
     }
 ];
 
