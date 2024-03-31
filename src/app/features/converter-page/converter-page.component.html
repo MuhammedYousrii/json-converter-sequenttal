@@ -2,33 +2,42 @@
 
 
 <!-- JSON BOX -->
-<app-json-box class="block w-100 text-center" (uponChange)="onValidJsonChange($event)"></app-json-box>
+<app-json-box 
+class="block w-11/12 rounded-md shadow-md my-8 mx-auto" 
+(uponChange)="onValidJsonChange($event)"></app-json-box>
 
 
-<!-- FILTERS BOXES -->
-@for (availableFilter of converterService.availableFiltersList$ | async; track $index) {
+<!-- FILTERS -->
+<section class="block w-11/12 rounded-md my-8 mx-auto">
+    @if((converterService.availableFiltersList$ | async)?.length) {
+        <h2 class="text-xl mb-4">Filters: </h2>
+    }
 
-<h3 class="text-lg text-center">Filters: </h3>
-<section class="flex flex-row flex-wrap justify-between">
+    <section class="flex flex-row flex-wrap justify-start">
 
+    @for (availableFilter of converterService.availableFiltersList$ | async; track $index) {
+        <ui-filter-box class="basis-1/4 grow shrink-0 px-4"
+        [key]="availableFilter.key"
+        [values]="availableFilter.values"
+        (uponFilterChange)="onFilterChange($event)">
+        </ui-filter-box>
+    } @empty {
+        <!-- <p>No filters available</p> -->
 
-
-    <ui-filter-box class="grow shrink-0 inline-flex"
-    [key]="availableFilter.key"
-    [values]="availableFilter.values"
-    (uponFilterChange)="onFilterChange($event)">
-</ui-filter-box>
+    }
+    </section>
 
 </section>
-} @empty {
-    <p>No filters available</p>
-}
 
 
 
-<!-- TABLE  -->
+
+<!-- TABLE & SEARCH & PAGINATION  -->
 @if ((converterService.tableData$ | async)?.length) {
-    <ui-table-body [dataSource$]="converterService.tableData$"></ui-table-body>
+    <section class="block w-11/12  my-8 mx-auto">
+        <h2 class="text-xl mb-4">Data: </h2>
+        <ui-table-body [dataSource$]="converterService.tableData$"></ui-table-body>
+    </section>
 }
 
 

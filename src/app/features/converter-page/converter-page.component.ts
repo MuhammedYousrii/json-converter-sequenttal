@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { JsonBoxComponent } from './json-box/json-box.component';
 import { FilterBoxComponent, PaginationComponent, TableBodyComponent } from '@jsonConverter/ui-elements';
 import { ConverterPageService } from './converter-page.service';
-import { FilterOptionModel } from './converter-page.models';
+import { ConverterConfigModel, FilterOptionModel } from './converter-page.models';
 
 
 @Component({
@@ -15,27 +15,30 @@ import { FilterOptionModel } from './converter-page.models';
 })
 
 
-export class ConverterPageComponent {
+export class ConverterPageComponent<T extends Record<string, any>> {
 
   public converterService: ConverterPageService<any> = inject(ConverterPageService);
 
 
   /**
-   * Call the converter service to notify all interested listeners for the new parsed JSON
+   * Make call to notify method on the converter service whenever the User entered new valid JSON
+   * 
+   * @note to learn more about config that I passed to co
+   * 
    * @param parsedJson 
    */
   public onValidJsonChange(parsedJson: any[]) {
-    this.converterService.notify({
+    const notifyConfig: ConverterConfigModel<T> = {
       useMemoized: false,
       value: parsedJson
-    }).then(() => console.log('Parsed JSON has been updated'));
+    }
+    this.converterService.notify(notifyConfig).then();
   }
 
   /**
    * Patch active filters values
    */
   public onFilterChange(filters: FilterOptionModel[]) {
-    console.log(filters);
     this.converterService.patchActiveFilters(filters);
   }
 
