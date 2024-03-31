@@ -14,7 +14,10 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 export function jsonBoxValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
         try {
-            return JSON.parse(control.value) && null;
+            if (control.value) {
+                return JSON.parse(control.value) && null;
+            }
+            return null;
         } catch (error) {
             return {
                 invalidJson: true
