@@ -4,8 +4,7 @@ import { JsonBoxComponent } from './json-box/json-box.component';
 import { FilterBoxComponent, PaginationComponent, TableBodyComponent } from '@jsonConverter/ui-elements';
 import { ConverterPageService } from './converter-page.service';
 import { FilterOptionModel } from './converter-page.models';
-import { AuthService } from 'src/app/core/auth/auth.service';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-converter-page',

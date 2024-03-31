@@ -1,4 +1,4 @@
-// Your web app's Firebase configuration
+// Firebase configuration which is used to initialize the Firebase app.
 export const firebaseConfig = {
   apiKey: "AIzaSyA3SjC-myKmFVkZrnSc8yOymkBK0ukthsA",
   authDomain: "json-converter-sequenttal.firebaseapp.com",
