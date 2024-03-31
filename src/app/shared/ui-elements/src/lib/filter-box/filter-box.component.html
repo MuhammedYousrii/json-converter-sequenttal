@@ -3,7 +3,6 @@
 </h5>
 <mat-form-field >
     <mat-select [attr.aria-label]="key" class="mat-select" multiple [formControl]="filterControl">
-      <mat-option>None</mat-option>
       @for (option of values; track option) {
         <mat-option [value]="option">{{ option }}</mat-option>
       }
