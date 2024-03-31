@@ -91,3 +91,9 @@ I embrace a mixed programming paradigm, leveraging reactive programming with RxJ
     - The table got updated according
   - The user try to logout
     - Logout user
+
+## TO DO
+- Create *shared sign form* to be used both **Login**  and **register** pages
+- Improves the user actions interactivity through using Dialogs, Snackbar etc...
+- Improve the UI and apply config folder concept 
+- Provide Authorization and apply it on view
