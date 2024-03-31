@@ -1,8 +1,11 @@
+<h5 class="filter-title">
+  {{ key  }}
+</h5>
 <mat-form-field >
-    <mat-label>{{ key }}</mat-label>
-    <mat-select class="mat-select" [formControl]="filterControl">
-      <mat-option *ngFor="let option of values" [value]="option">
-        {{ option }}
-      </mat-option>
+    <mat-select [attr.aria-label]="key" class="mat-select" multiple [formControl]="filterControl">
+      <mat-option>None</mat-option>
+      @for (option of values; track option) {
+        <mat-option [value]="option">{{ option }}</mat-option>
+      }
     </mat-select>
   </mat-form-field>

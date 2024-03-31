@@ -6,15 +6,20 @@
 
 
 <!-- FILTERS BOXES -->
+<h2>Filters: </h2>
+<section class="filters-wrapper">
+
+
 @for (availableFilter of converterService.availableFiltersList$ | async; track $index) {
-    <ui-filter-box style="margin: 5px;"
+    <ui-filter-box style="margin: 5px; display: block;"
     [key]="availableFilter.key"
     [values]="availableFilter.values"
     (uponFilterChange)="onFilterChange($event)">
 </ui-filter-box>
 } @empty {
-    <p>Enter a JSON to enable filtering data using dynamic filters</p>
+    <p>Filters will be provided upon Entered Json</p>
 }
+</section>
 
 
 
@@ -25,12 +30,7 @@
 <!-- TABLE  -->
 @if ((converterService.tableData$ | async)?.length) {
     <ui-table-body [dataSource$]="converterService.tableData$"></ui-table-body>
-} @else {
-        <p>Enter a JSON to enable Tables with built-in sorting and filtering functionlities</p>
 }
 
-
-
-<!-- <ui-pagination></ui-pagination> -->
 
 </section>

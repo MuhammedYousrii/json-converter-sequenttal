@@ -48,8 +48,8 @@ export class FilterBoxComponent implements OnInit {
 
 
 
-  filterGotChange(values: string) {
-    this.uponFilterChange.emit([{key: this.key, values: [values]}]);
+  filterGotChange(values: string[]) {
+    this.uponFilterChange.emit([{key: this.key, values: values}]);
   }
 
 }
