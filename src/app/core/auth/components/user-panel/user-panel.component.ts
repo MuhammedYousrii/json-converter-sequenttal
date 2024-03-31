@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { AuthService } from '../../auth.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { User } from '@angular/fire/auth';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-panel',
@@ -16,6 +17,7 @@ import { MatMenuModule } from '@angular/material/menu';
 export class UserPanelComponent {
 
   private readonly _authService = inject(AuthService);
+  user$: Observable<User | null> = this._authService.user$;
 
   logout(): void {
     this._authService.logout()
