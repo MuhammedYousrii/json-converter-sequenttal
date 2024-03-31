@@ -1,30 +1,28 @@
-import { Component, OnDestroy, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../auth.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, MatFormFieldModule, MatInputModule, MatCardModule, MatButtonModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, MatFormFieldModule, MatInputModule, MatCardModule, MatButtonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegisterComponent implements OnDestroy {
-  readonly FB = inject(FormBuilder);
-  readonly router = inject(Router);
-  readonly authService = inject(AuthService);
+export class RegisterComponent {
+  private readonly _FB = inject(FormBuilder);
+  private readonly _authService = inject(AuthService);
 
-  errorMessage: string | null = null;
-  private destroy$ = new Subject<void>();
+  errorMessageS: WritableSignal<string | null> = signal<string | null>(null);
 
-  readonly registerForm = this.FB.nonNullable.group({
+  readonly registerForm = this._FB.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     username: ['', [Validators.required, Validators.minLength(3)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
@@ -33,24 +31,16 @@ export class RegisterComponent implements OnDestroy {
 
   uponSubmit(): void {
     const rawValue = this.registerForm.getRawValue();
-    this.authService.register(rawValue.email, rawValue.username, rawValue.password).pipe(
-      takeUntil(this.destroy$)
-    ).subscribe({
-      next: () => this.router.navigateByUrl('converter'),
-      error: (error) => { 
-        this.errorMessage = error.message; 
-      }
-
+    this._authService.register(rawValue.email, rawValue.username, rawValue.password)
+    .then(() => this._authService.navigateToHomePage())
+    .catch((error) => {
+      this.errorMessageS.set(error.code); 
     });
   }
 
   navigateToLoginPage($event: Event): void {
     $event.preventDefault();
-    this.router.navigateByUrl('auth/login');
+    this._authService.navigateToLoginPage();
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 }
