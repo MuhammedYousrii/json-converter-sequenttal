@@ -21,22 +21,23 @@ export class ConverterPageComponent<T extends Record<string, any>> {
 
 
   /**
-   * Make call to notify method on the converter service whenever the User entered new valid JSON
-   * 
-   * @note to learn more about config that I passed to co
+   * Make a call to notify method on the converter service whenever the User entered new valid JSON
    * 
    * @param parsedJson 
    */
   public onValidJsonChange(parsedJson: any[]) {
     const notifyConfig: ConverterConfigModel<T> = {
       useMemoized: false,
-      value: parsedJson
+      parsedJson
     }
     this.converterService.notify(notifyConfig).then();
   }
 
   /**
-   * Patch active filters values
+   * Make a all to patchActiveFilters method on the converter service 
+   * whenever the User changes the filter
+   * 
+   * @param filters
    */
   public onFilterChange(filters: FilterOptionModel[]) {
     this.converterService.patchActiveFilters(filters);

@@ -13,5 +13,5 @@ export interface PaginationConfigModel {
 
   export interface ConverterConfigModel<T extends Record<string, any>> {
     useMemoized: boolean;
-    value: T[];
+    parsedJson: T[];
   }
